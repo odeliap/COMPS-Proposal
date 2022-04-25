@@ -3,6 +3,19 @@
 % use the oxycomps style file
 \usepackage{oxycomps}
 
+% use packages for timeline
+\usepackage{array, booktabs, longtable}
+\usepackage{graphicx}
+\usepackage[x11names, table]{xcolor}
+\usepackage{caption}
+\DeclareCaptionFont{blue}{\color{LightSteelBlue3}}
+
+\newcommand{\foo}{\color{LightSteelBlue3}\makebox[0pt]{\tiny\textbullet}\hskip-0.5pt\vrule width 1pt\hspace{\labelsep}}
+\newcommand{\bfoo}{\raisebox{2.1ex}[0pt]{\makebox[\dimexpr2\tabcolsep]%
+{\color{LightSteelBlue3}\tiny\textbullet}}}%
+\newcommand{\tfoo}{\makebox[\dimexpr2\tabcolsep]%
+{\color{LightSteelBlue3}$\boldsymbol \uparrow $}}%
+
 % read references.bib for the bibtex data
 \bibliography{references}
 
@@ -296,6 +309,43 @@ Based on how each model performed, we can answer some follow up questions to max
     \item Should we use one or another cryptocurrency price prediction solely to inform the cryptocurrency index fund trading algorithm?
 \end{itemize}
 
+\section{Prior Work}
+
+LSTMs are one of the most widely employed methods for sequential data problems and time-series forecasting. In this section, we will focus on prior work in using LSTMs for stock price prediction.
+
+\subsection{Sentiment Analysis}
+
+According to efficient market hypothesis, stock prices are driven by news rather than past and present prices; they change based on news of changing fundamentals and human psychology (investor reactions to this news) \cite{LSTMSentimentAnalysis}. This suggests our input data to an LSTM for stock price predictions should include fundamentals and sentiment analysis so we can model prices based on changes in news and sentiment which gauges crowd feelings towards a given stock or industry.
+
+\cite{ReviewAndTaxonomyOfPredictionTechniques} recently employed fundamental analysis for stock price prediction, analyzing company profiles, industry, politics, the economy, and social media according to \cite{LSTMSentimentAnalysis}. However, as \cite{LSTMSentimentAnalysis} mentions, this type of fundamental data is usually rather abstract or unstructured, making it hard to fit into a form LSTMs can use. Instead, \cite{LSTMSentimentAnalysis} suggests using NLP methods to distill relevant information. Sentiment analysis is a strong candidate currently used to analyze text for emotional sentiments and reactions to ``understand" human feeling. From this ``understanding", we can examine how a stock may perform based on human feelings towards this stock. If, for example, negative sentiment about bitcoin is spreading, this may signal to us a coming drop in the bitcoin stock price. As such, sentiment analysis of crowd psychology can monitor public opinion \cite{LSTMSentimentAnalysis}.
+
+\subsection{RNNs and LSTMs}
+
+RNNs, particularly their LSTM derivative, have been shown to outperform traditionally used models, such as support vector machines (SVMs) in accurately predicting for time-series problems \cite{LSTMSentimentAnalysis}. By feeding a combination of fundamental and sentiment analysis to LSTMs to analyze, researchers have made promising strides towards success in predicting stock prices.
+
+Similar to what I propose to do, \citetitle{LSTMSentimentAnalysis} used a long short-term memory neural network with text sentiments and historical stock transactions to predict stock prices. The authors argue in the paper's introduction for the importance of aggressive investing strategies and, hence, the usefulness of accurate stock trend forecasting. They use fundamental analysis and technical analysis to forecast stock prices in addition to an LSTM, which was applied to this forecasting. Using text sentiment from blog articles, social media, online forum posts, and product reviews, the authors aimed to understand online public opinions. They used an existing NLP algorithm (BERT) to classify the texts into sentiment categories by counting the emotional words that appear in a given sentence, then calculating a score for each emotional word, and, with these individual scores, output the condition of the sentence. Further, this article addressing preprocessing of data to get it into a form where it can be passed to the ML algorithm, which is very useful for me to apply to my own product algorithm.
+
+\subsection{Other Models}
+
+\citetitle{ForecastingAndTradingCryptoWithML} examined the predictability of three major crypto contenders: bitcoin, ethereum, and litecoin. They focused on times of extreme upheaval and used linear models, random forests, and support vector machines for their predictive work. Of the 18 models they built, 13 models had a success rate over 50\%, affirming the promise of ML algorithms for cryptocurrency stock price prediction. In their introduction, they explain the proposal of sentiment analysis for stock price prediction, which is what motivated me to choose the same for my project.
+
+\subsection{Trading Algorithms}
+
+There are many possible trading algorithms to use for index fund rebalancing. 
+
+\subsubsection{Mean-Variance Optimization}
+
+One such trading algorithm is mean-variance optimization. \citetitle{MeanVarianceAlgorithmicTrading} implores this algorithm, implementing Markowitz's portfolio optimization (MPT) and the Modern Portfolio Theory are  in python as trading strategies with the \textit{zipline} library. The general goal of MPT is maximize returns while minimizing risk. This method ignores transaction costs, which, for an index fund, do need to be considered and disallows short-selling.
+
+\subsubsection{Constant Rebalanced Portfolios}
+
+Constant Rebalanced Portfolios are another trading algorithm, achieved by \citetitle{ConstantRebalancedPortfolios}. The idea explained in this article is:
+
+Say we have three stocks, and we believe each will perform equally well, so we split our money in three, making our holdings $\{1/3, 1/3, 1/3\}$. Let's say one of these three stocks does significantly better than the rest, making our holdings: $\{1/2, 1/4, 1/4\}$. The idea here is we believe this disproportionate return was just chance, and so we sell off some of this stock and rebalance to our original $\{1/3, 1/3, 1/3\}$.
+
+The use of this trading algorithm has historically allowed for cutting losses and maximizing gains dynamically.
+
+
 \section{Ethical Considerations}
 
 When considering the ethical considerations of predicting cryptocurrency prices for stock trading using machine learning, we must break the question into sub-tasks. Since this project advocates for the use of cryptocurrencies, we must consider the ethics of cryptocurrencies themselves. Further, we must look into the ethics of stock trading and the investor obligations that come into play when building an index fund, especially one built with machine learning.
@@ -374,9 +424,23 @@ The second consideration is the environmental impact of cryptocurrencies, as the
 
 All this said, this project, in actuality, will not consist of large deep-learning model. Rather, it will be the scope of a senior thesis project, resulting in a relatively small neural network. Thus, these environmental concerns do not directly apply, and we are safe to resume this project within the realms of environmental ethical concern.
 
+\section{Proposed Timeline}
 
+\renewcommand\arraystretch{1.4}\arrayrulecolor{LightSteelBlue3}
+\captionsetup{font=blue, labelfont=sc, labelsep=quad}
+\begin{longtable}{@{\,}r <{\hskip 2pt} !{\foo} >{\raggedright\arraybackslash}p{5cm}}
+ \caption{Timeline} \\[-1.5ex]
+\toprule
+\addlinespace[1.5ex] 
+ \multicolumn{1}{c!{\tfoo}}{}& \\[-2.3ex]
+May - August & Collect sentiment and stock price data; Pre-process data into data sets for sentiment analysis\\
+September & Perform sentiment analysis; Create data set for LSTM neural network; Build LSTM neural network\\
+October & Train LSTM neural network on analyzed data set; Build index fund rebalancing algorithm\\
+November & Pass LSTM neural net outputs to rebalancing algorithm; Evaluate index fund\\
+December & Finish COMPs paper and present findings\\
+ \multicolumn{1}{c!{\bfoo}}{}&
+\end{longtable}
 
-\section{Software Documentation}
 
 
 \printbibliography 
